@@ -19,6 +19,8 @@ An [Amazon Web Services][aws] developer account that is signed up for the
 Access Key ID	and Secret Access Key in the file ```config.rb```, otherwise
 the script will not work.
 
+This script requires the ```amazon_product``` ruby gem to be installed.
+
 Library Input
 -------------
 When the file ```dokuwiki.txt``` is not empty at program start, it is being

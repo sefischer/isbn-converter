@@ -120,7 +120,7 @@ def read_file
       next unless line[0] == '|'
       line[0] = ''
       
-      isbn = line.split('|').last.match(/^[[:space:]]*([[:digit:]]*)/)[1]
+      isbn = line.split('|').last.match(/^[[:space:]]*([[[:digit:]]-]*)/)[1]
       isbn = normalize_isbn(isbn)
       next if isbn.empty?
       

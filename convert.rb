@@ -61,10 +61,16 @@ def get_attrs_from_isbn(isbn)
 
     begin
       resp['__PublicationYear'] = Date.parse(resp['PublicationDate']).year
-    rescue ArgumentError => e
+    rescue ArgumentError
       # TODO try to parse the date before failing for this locale
-      status_message("The returned date is not valid.", :warn)
-      next
+      # check for a date in the format of 2005-12 or 2005
+      regex = /^([[:digit:]]{4})(-[[:digit:]]{1,2})?$/
+      if match = regex.match(resp['PublicationDate'])
+        resp['__PublicationYear'] = match[0]
+      else
+        status_message("The returned date is not valid.", :warn)
+        next
+      end
     end
 
     # all tests passed

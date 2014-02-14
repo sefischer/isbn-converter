@@ -51,8 +51,28 @@ def get_attrs_from_isbn(isbn)
     # store this for reference
     resp['__AmazonLocale'] = locale
 
-    unless  resp.has_key?('Author') &&
-            resp.has_key?('Title') &&
+    resp['__Author'] = nil
+    if resp.has_key?('Author') then
+      resp['__Author'] = [*resp['Author']].join(', ')
+    elsif resp.has_key?('Creator') then
+      # resp['Creator'] can be an array of creators
+      if resp['Creator'].class == Hash
+        resp['Creator'] = [resp['Creator']]
+      end
+      resp['Creator'].each do |creator|
+        pp creator
+        if creator['Role'] == 'Editor' || creator['Role'] == 'Herausgeber'
+          resp['__Author'] = creator['__content__'] + ' (Hrsg.)'
+        end
+      end
+    end
+
+    unless resp['__Author']
+      status_message("No author information found.", :warn)
+      next
+    end
+
+    unless  resp.has_key?('Title') &&
             resp.has_key?('Publisher') &&
             resp.has_key?('PublicationDate')
       status_message("A required key is missing from the response.", :warn)
@@ -97,7 +117,7 @@ def dokuwiki_line(item, isbn, *comment)
 
   # Dokuwiki apparently does not support escaping pipe
   # symbols, so we just delete them
-  author = item['Author'].delete('|')
+  author = item['__Author'].delete('|')
   title = item['Title'].delete('|')
   publisher = item['Publisher'].delete('|')
 
@@ -156,24 +176,9 @@ def isbn_exists?(isbn)
   $isbn_list.include?(isbn)
 end
 
-def harmonize_item(item)
-  ret = {}
-  ret['Author'] = [*item['Author']].join(', ')
-  ret['Title'] = item['Title']
-  ret['Publisher'] = item['Publisher']
-  ret['PublicationDate'] = item['PublicationDate']
-
-  # our own fields
-
-  ret['__AmazonLocale'] = item['__AmazonLocale']
-  ret['__PublicationYear'] = item['__PublicationYear']
-
-  ret
-end
-
 def print_item(item)
   puts "  Title: #{item['Title']}"
-  puts "  Author: #{item['Author']}"
+  puts "  Author: #{item['__Author']}"
   puts "  Publisher: #{item['Publisher']}"
   puts "  PublicationDate: #{item['PublicationDate']}"
 end

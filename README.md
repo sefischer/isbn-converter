@@ -19,7 +19,10 @@ An [Amazon Web Services][aws] developer account that is signed up for the
 Access Key ID	and Secret Access Key in the file ```config.rb```, otherwise
 the script will not work.
 
-This script requires the ```amazon_product``` ruby gem to be installed.
+This script requires the following ruby gems to be installed:
+
+* ```amazon_product```
+* ```term-ansicolor```
 
 Library Input
 -------------

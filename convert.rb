@@ -85,7 +85,7 @@ def get_attrs_from_isbn(isbn)
       # check for a date in the format of 2005-12 or 2005
       regex = /^([[:digit:]]{4})(-[[:digit:]]{1,2})?$/
       if match = regex.match(resp['PublicationDate'])
-        resp['__PublicationYear'] = match[0]
+        resp['__PublicationYear'] = match[1]
       else
         status_message("The returned date is not valid.", :warn)
         next

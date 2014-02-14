@@ -23,7 +23,7 @@ Library Input
 -------------
 When the file ```dokuwiki.txt``` is not empty at program start, it is being
 used to initialize the list of known ISBNs. **convert.rb** will then append
-the rows created in this session to the file. 
+the rows created in this session to the file.
 
 Features
 --------

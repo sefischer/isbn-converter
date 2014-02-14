@@ -176,9 +176,8 @@ end.parse!
 $isbn_list = []
 $isbn_list = read_file unless no_read
 # amazon locales are tried in this order until a useful result is found
-# TODO set to ['us', 'de']
-# $locales = ['us', 'de']
-$locales = ['de', 'us']
+$locales = ['us', 'de']
+# $locales = ['de', 'us']
 
 puts "CERTAIN CONTENT THAT APPEARS IN THIS APPLICATION COMES FROM AMAZON EU S.à.r.l. THIS CONTENT IS PROVIDED ‘AS IS’ AND IS SUBJECT TO CHANGE OR REMOVAL AT ANY TIME.\n"
 

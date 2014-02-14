@@ -60,7 +60,6 @@ def get_attrs_from_isbn(isbn)
         resp['Creator'] = [resp['Creator']]
       end
       resp['Creator'].each do |creator|
-        pp creator
         if creator['Role'] == 'Editor' || creator['Role'] == 'Herausgeber'
           resp['__Author'] = creator['__content__'] + ' (Hrsg.)'
         end
@@ -180,7 +179,7 @@ def print_item(item)
   puts "  Title: #{item['Title']}"
   puts "  Author: #{item['__Author']}"
   puts "  Publisher: #{item['Publisher']}"
-  puts "  PublicationDate: #{item['PublicationDate']}"
+  puts "  Publication Year: #{item['__PublicationYear']}"
 end
 
 ### OPTION PARSING

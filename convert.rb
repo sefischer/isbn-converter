@@ -51,9 +51,9 @@ def get_attrs_from_isbn(isbn)
     # store this for reference
     resp['__AmazonLocale'] = locale
 
-    resp['__Author'] = nil
+    resp['__Author'] = []
     if resp.has_key?('Author') then
-      resp['__Author'] = [*resp['Author']].join(', ')
+      resp['__Author'] << resp['Author']
     elsif resp.has_key?('Creator') then
       # resp['Creator'] can be an array of creators
       if resp['Creator'].class == Hash
@@ -61,12 +61,13 @@ def get_attrs_from_isbn(isbn)
       end
       resp['Creator'].each do |creator|
         if creator['Role'] == 'Editor' || creator['Role'] == 'Herausgeber'
-          resp['__Author'] = creator['__content__'] + ' (Hrsg.)'
+          resp['__Author'] << creator['__content__'] + ' (Hrsg.)'
         end
       end
     end
+    resp['__Author'] = resp['__Author'].flatten.join(', ')
 
-    unless resp['__Author']
+    if resp['__Author'].empty?
       status_message("No author information found.", :warn)
       next
     end
